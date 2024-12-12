@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gait Analysis Popup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .popup {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #ddd;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            width: 80%;
+            /* max-width: 600px; */
+            display: none;
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        /* Add your report styles here (copied from your existing HTML) */
+    </style>
+</head>
+<body>
+
+    <button onclick="showPopup()">Show Gait Analysis Report</button>
+
+    <div class="popup-overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popup">
+        <button class="close-popup" onclick="hidePopup()">✖</button>
+
+        <!-- Gait Analysis Content -->
+        <div class="header">
+            Christine Tan &nbsp;&nbsp;&nbsp;&nbsp; TEST ID-1234 &nbsp;&nbsp;&nbsp;&nbsp; 09/23/2024 06:00 AM
+        </div>
+        <div class="report-title">GAIT ANALYSIS REPORT</div>
+        <table style="border-collapse: collapse; width: 100%; max-width: 600px; margin: 20px auto;">
+            <tr>
+                <th colspan="3" style="background-color: #f2f2f2; padding: 12px; text-align: center; border: 1px solid #ddd;">
+                    Patient Information
+                </th>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;"><strong>Patient's Name:</strong> Christine Tan</td>
+                <td style="padding: 8px; border: 1px solid #ddd;"><strong>Age:</strong> 30</td>
+                <td style="padding: 8px; border: 1px solid #ddd;"><strong>Gender:</strong> Female</td>
+            </tr>
+            <!-- Additional rows -->
+        </table>
+
+        <div class="summary">
+            <p class="section-title">SUMMARY</p>
+            <p id="summaryText">Loading...</p>
+        </div>
+
+        <div class="section-title">Gait Parameters</div>
+        <table class="parameters">
+            <tr>
+                <th>GAIT PARAMETERS</th>
+                <th>Normal Value</th>
+                <th>Tested Value</th>
+                <th>Normal/Abnormal</th>
+            </tr>
+            <tr>
+                <td>Step Length (in)</td>
+                <td>27-30 inches</td>
+                <td id="stepLength">Loading...</td>
+                <td id="stepLengthStatus">Loading...</td>
+            </tr>
+            <!-- Additional rows -->
+        </table>
+    </div>
+
+    <script>
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('popupOverlay').style.display = 'block';
+            
+            // Set dynamic values (example from context)
+            const context = {
+                summary: "The patient exhibits a normal gait.",
+                stepLength: 17.15,
+                stepLengthStatus: "Below Normal",
+            };
+
+            document.getElementById('summaryText').textContent = context.summary;
+            document.getElementById('stepLength').textContent = context.stepLength;
+            document.getElementById('stepLengthStatus').textContent = context.stepLengthStatus;
+        }
+
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>clinical_api.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="clinical-data-api-documentation">Clinical Data API Documentation</h1>
+<h2 id="overview">Overview</h2>
+<p>The Clinical Data API allows clients to retrieve detailed clinical data associated with a specific gait process identified by a <code>process_id</code>. This includes gait parameters, phase-specific joint angles, statuses, and URLs for corresponding frames. This API is designed for use in gait analysis applications to provide insights into various gait phases and the overall gait health status.</p>
+<hr>
+<h2 id="endpoint">Endpoint</h2>
+<p><strong>URL</strong>: <code>/clinicalApi/?process_id={process_id}</code></p>
+<p><strong>Example</strong>: <code>/clinical_data/?process_id=55-webportal-55-gait-1731312374351924</code></p>
+<p><strong>Method</strong>: <code>GET</code></p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>process_id</code> (string, required): A unique identifier for the gait process.</li>
+</ul>
+<hr>
+<h2 id="api-behavior">API Behavior</h2>
+<p>The API accepts a <code>GET</code> request with the <code>process_id</code> as a query parameter. It retrieves the <code>ClinicalData</code> object associated with the provided <code>process_id</code> and returns the details in JSON format.</p>
+<p>If the <code>process_id</code> parameter is missing or invalid, the API responds with an error.</p>
+<hr>
+<h2 id="response">Response</h2>
+<h3 id="success-response">Success Response</h3>
+<p>If the <code>process_id</code> is valid and the corresponding <code>ClinicalData</code> object exists, the API responds with a <code>200 OK</code> status and returns the following JSON structure:</p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"test_id"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"test_date"</span>: <span class="hljs-string">"datetime"</span>,
+    <span class="hljs-attr">"owner"</span>: <span class="hljs-string">"string"</span>,
+    
+    <span class="hljs-comment">// Gait Parameters</span>
+    <span class="hljs-attr">"step_length"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"stride_length"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"speed"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"cadence"</span>: <span class="hljs-string">"float"</span>,
+    
+    <span class="hljs-comment">// Gait Parameters Status</span>
+    <span class="hljs-attr">"step_length_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"stride_length_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"speed_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"cadence_status"</span>: <span class="hljs-string">"string"</span>,
+    
+    <span class="hljs-comment">// Heel Strike Phase</span>
+    <span class="hljs-attr">"hs_frame"</span>: <span class="hljs-string">"integer"</span>,
+    <span class="hljs-attr">"hs_hip"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"hs_knee"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"hs_ankle"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"hs_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"hs_frame_url"</span>: <span class="hljs-string">"string"</span>,
+    
+    <span class="hljs-comment">// Midstance Phase</span>
+    <span class="hljs-attr">"ms_frame"</span>: <span class="hljs-string">"integer"</span>,
+    <span class="hljs-attr">"ms_hip"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"ms_knee"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"ms_ankle"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"ms_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"ms_frame_url"</span>: <span class="hljs-string">"string"</span>,
+    
+    <span class="hljs-comment">// Toe Off Phase</span>
+    <span class="hljs-attr">"toe_frame"</span>: <span class="hljs-string">"integer"</span>,
+    <span class="hljs-attr">"toe_hip"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"toe_knee"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"toe_ankle"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"toe_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"toe_frame_url"</span>: <span class="hljs-string">"string"</span>,
+    
+    <span class="hljs-comment">// Mid Swing Phase</span>
+    <span class="hljs-attr">"sw_frame"</span>: <span class="hljs-string">"integer"</span>,
+    <span class="hljs-attr">"sw_hip"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"sw_knee"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"sw_ankle"</span>: <span class="hljs-string">"float"</span>,
+    <span class="hljs-attr">"sw_status"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"sw_frame_url"</span>: <span class="hljs-string">"string"</span>
+}
+</div></code></pre>
+<h2 id="field-descriptions">Field Descriptions</h2>
+<h3 id="clinical-data-attributes">Clinical Data Attributes</h3>
+<p><code>test_id:</code> Unique identifier for the test (string).
+test_date:<code> Date and time when the test was conducted. owner: Username of the user associated with this clinical data. Gait Parameters step_length:</code> Distance between successive steps (float, inches).
+stride_length: Distance covered in a full gait cycle (float, inches).
+``speed: Speed of walking (float, feet per second).
+cadence: Steps taken per minute (float).
+Gait Parameters Status
+Indicates whether the respective gait parameter is normal or abnormal:</p>
+<p>step_length_status:<code> Status of step length. stride_length_status: Status of stride length. speed_status: Status of speed. cadence_status:</code> Status of cadence.
+Gait Phases
+Each gait phase contains data on frame number, joint angles (hip, knee, ankle), and frame URL.</p>
+<ul>
+<li>Heel Strike Phase:</li>
+</ul>
+<p><code>hs_frame:</code> Frame number where heel strike occurs.
+<code>hs_hip, hs_knee, hs_ankle: Hip, knee, and ankle angles during heel strike. </code>hs_status:<code>Status indicating normal or abnormal heel strike.</code>hs_frame_url:`` URL linking to the image or video frame of heel strike.</p>
+<ul>
+<li>Midstance Phase:</li>
+</ul>
+<p><code>ms_frame:</code> Frame number where midstance occurs.
+ms_hip, ms_knee, ms_ankle: Hip, knee, and ankle angles during midstance.
+<code>ms_status:</code> Status of the midstance phase.
+<code>ms_frame_url:</code> URL linking to the image or video frame of midstance.</p>
+<ul>
+<li>Toe Off Phase:</li>
+</ul>
+<p><code>toe_frame:</code> Frame number where toe-off occurs.
+toe_hip, toe_knee, toe_ankle: Hip, knee, and ankle angles during toe-off.
+<code>toe_status:</code> Status indicating normal or abnormal toe-off.
+<code>toe_frame_url:</code> URL linking to the image or video frame of toe-off.</p>
+<ul>
+<li>Mid Swing Phase:</li>
+</ul>
+<p><code>sw_frame:</code> Frame number where mid swing occurs.
+<code>sw_hip, sw_knee, sw_ankle: Hip, knee, and ankle angles during mid swing. </code>sw_status:<code>Status indicating normal or abnormal mid swing.</code>sw_frame_url:`` URL linking to the image or video frame of mid swing.</p>
+<h3 id="error-response">Error Response</h3>
+<p>If the process_id is missing or incorrect, the API responds with a 400 Bad Request status and an error message:</p>
+<pre class="hljs"><code><div>    &quot;error&quot;: &quot;Missing process_id parameter&quot;
+}
+</div></code></pre>
+<h2 id="example-request">Example Request</h2>
+<p><code>GET /api/clinical_data/?process_id=55-webportal-55-gait-1731312374351924</code></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1 id="code-example">Code example</h1>
+<pre class="hljs"><code><div>- API DECLARE
+
+
+class ClinicalData(models.Model):
+    test_id = models.CharField(max_length=20, unique=True, default='')
+    test_date = models.DateTimeField(auto_now_add=True)
+    
+    owner = models.ForeignKey(User,
+                              related_name='%(class)s_related',
+                              default=None,
+                              on_delete=models.CASCADE)
+    # Foreign key to SagittalGait
+    process = models.ForeignKey(
+        ProcessGait, 
+        on_delete=models.CASCADE,
+        related_name='clinical_data',
+        primary_key=True
+    )
+    
+    # Gait Parameters
+    step_length = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2,
+        default=0,
+        help_text=&quot;Step length in inches&quot;
+    )
+    stride_length = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2,
+        default=0,
+        help_text=&quot;Stride length in inches&quot;
+    )
+    speed = models.DecimalField(
+        max_digits=4, 
+        decimal_places=2,
+        default=0,
+        help_text=&quot;Speed in ft/sec&quot;
+    )
+    cadence = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2,
+        default=0,
+        help_text=&quot;Cadence in steps/min&quot;
+    )
+    
+    # Gait Parameters Status
+    step_length_status = models.CharField(max_length=20, default='',blank=True)
+    stride_length_status = models.CharField(max_length=20, default='',blank=True)
+    speed_status = models.CharField(max_length=20, default='',blank=True)
+    cadence_status = models.CharField(max_length=20, default='',blank=True)
+    
+    # Heel Strike Phase
+    hs_frame = models.IntegerField(help_text=&quot;Heel Strike frame number&quot;, default=0)
+    hs_hip = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    hs_knee = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    hs_ankle = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    hs_status = models.CharField(max_length=20, default='Normal',blank=True)
+    hs_frame_url = models.URLField(max_length=60, default='',blank=True)
+    
+    # Midstance Phase
+    ms_frame = models.IntegerField(help_text=&quot;Midstance frame number&quot;, default=0)
+    ms_hip = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    ms_knee = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    ms_ankle = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    ms_status = models.CharField(max_length=20, default='Normal',blank=True)
+    ms_frame_url = models.URLField(max_length=60, default='',blank=True)
+    
+    # Toe Off Phase
+    toe_frame = models.IntegerField(help_text=&quot;Toe Off frame number&quot;, default=0)
+    toe_hip = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    toe_knee = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    toe_ankle = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    toe_status = models.CharField(max_length=20, default='Normal',blank=True)
+    toe_frame_url = models.URLField(max_length=60, default='',blank=True)
+    
+    # Mid Swing Phase
+    sw_frame = models.IntegerField(help_text=&quot;Mid Swing frame number&quot;, default=0)
+    sw_hip = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    sw_knee = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    sw_ankle = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    sw_status = models.CharField(max_length=20, default='Normal',blank=True)
+    sw_frame_url = models.URLField(max_length=60, default='',blank=True)
+
+    class Meta:
+        verbose_name = &quot;Clinical Data&quot;
+        verbose_name_plural = &quot;Clinical Data&quot;
+        ordering = ['-test_date']
+
+    def __str__(self):
+        return f&quot;Process ID: {self.process.processId}&quot;
+
+    @property
+    def overall_status(self):
+        statuses = [
+            self.step_length_status,
+            self.stride_length_status,
+            self.speed_status,
+            self.cadence_status,
+            self.hs_status,
+            self.ms_status,
+            self.to_status,
+            self.sw_status
+        ]
+        return &quot;Abnormal&quot; if &quot;Abnormal&quot; in statuses else &quot;Normal&quot;
+
+
+
+- Api Call
+
+def api(request):
+    print(&quot;test api&quot;)
+    
+    # Retrieve `process_id` from the request's query parameters
+    process_id = request.GET.get('process_id')
+    process_id = &quot;55-webportal-55-gait-1731312374351924&quot;
+    if not process_id:
+        return HttpResponse(&quot;Missing process_id parameter&quot;, status=400)
+    
+    # Retrieve ClinicalData object based on `process_id`
+    clinical_data = get_object_or_404(ClinicalData, process=process_id)
+    
+    # print(&quot;Clinical Data Retrieved:&quot;, clinical_data)
+    # return HttpResponse(f&quot;API is working. Clinical Data: {clinical_data.cadence}&quot;)
+
+    # Serialize the ClinicalData object to JSON, including all fields
+    clinical_data_json = {
+        &quot;test_id&quot;: clinical_data.test_id,
+        &quot;test_date&quot;: clinical_data.test_date.isoformat(),
+        &quot;owner&quot;: clinical_data.owner.username,
+        
+        # Gait Parameters
+        &quot;step_length&quot;: float(clinical_data.step_length),
+        &quot;stride_length&quot;: float(clinical_data.stride_length),
+        &quot;speed&quot;: float(clinical_data.speed),
+        &quot;cadence&quot;: float(clinical_data.cadence),
+        
+        # Gait Parameters Status
+        &quot;step_length_status&quot;: clinical_data.step_length_status,
+        &quot;stride_length_status&quot;: clinical_data.stride_length_status,
+        &quot;speed_status&quot;: clinical_data.speed_status,
+        &quot;cadence_status&quot;: clinical_data.cadence_status,
+        
+        # Heel Strike Phase
+        &quot;hs_frame&quot;: clinical_data.hs_frame,
+        &quot;hs_hip&quot;: float(clinical_data.hs_hip),
+        &quot;hs_knee&quot;: float(clinical_data.hs_knee),
+        &quot;hs_ankle&quot;: float(clinical_data.hs_ankle),
+        &quot;hs_status&quot;: clinical_data.hs_status,
+        &quot;hs_frame_url&quot;: clinical_data.hs_frame_url,
+        
+        # Midstance Phase
+        &quot;ms_frame&quot;: clinical_data.ms_frame,
+        &quot;ms_hip&quot;: float(clinical_data.ms_hip),
+        &quot;ms_knee&quot;: float(clinical_data.ms_knee),
+        &quot;ms_ankle&quot;: float(clinical_data.ms_ankle),
+        &quot;ms_status&quot;: clinical_data.ms_status,
+        &quot;ms_frame_url&quot;: clinical_data.ms_frame_url,
+        
+        # Toe Off Phase
+        &quot;toe_frame&quot;: clinical_data.toe_frame,
+        &quot;toe_hip&quot;: float(clinical_data.toe_hip),
+        &quot;toe_knee&quot;: float(clinical_data.toe_knee),
+        &quot;toe_ankle&quot;: float(clinical_data.toe_ankle),
+        &quot;toe_status&quot;: clinical_data.toe_status,
+        &quot;toe_frame_url&quot;: clinical_data.toe_frame_url,
+        
+        # Mid Swing Phase
+        &quot;sw_frame&quot;: clinical_data.sw_frame,
+        &quot;sw_hip&quot;: float(clinical_data.sw_hip),
+        &quot;sw_knee&quot;: float(clinical_data.sw_knee),
+        &quot;sw_ankle&quot;: float(clinical_data.sw_ankle),
+        &quot;sw_status&quot;: clinical_data.sw_status,
+        &quot;sw_frame_url&quot;: clinical_data.sw_frame_url
+    }
+    
+    return JsonResponse(clinical_data_json,status=200)
+    ```
+
+
+
+</div></code></pre>
+
+</body>
+</html>
